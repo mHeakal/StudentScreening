@@ -2,8 +2,7 @@
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
       <h1>login</h1>
-      <form [formGroup]="myForm" (ngSubmit)="onSubmit()" css="signin.css">
-          <!-- <link href="signin.css" rel="stylesheet"> -->
+      <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
         <div formGroupName="loginData">
           <div class="form-group">
             <input type="text" class="form-control" id="email" formControlName="email" placeholder="E-Mail">
