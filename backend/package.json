@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Server side api and services using Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mHeakal/StudentScreening.git"
+  },
+  "keywords": [
+    "Admin",
+    "Staff",
+    "Student"
+  ],
+  "author": "Ali Asad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mHeakal/StudentScreening/issues"
+  },
+  "homepage": "https://github.com/mHeakal/StudentScreening#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
