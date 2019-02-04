@@ -9,7 +9,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class StaffServiceService {
 
-  private myHeader, params;
+  private myHeader;// params;
   constructor(public http: HttpClient) { }
 
   getStaffList(pageNumber:number){

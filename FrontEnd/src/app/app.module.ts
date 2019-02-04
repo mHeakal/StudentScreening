@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 
@@ -9,8 +10,11 @@ import { AdminComponent } from './admin/admin.component';
 import { StaffListComponent } from './staff-list/staff-list.component';
 import { HttpClientModule } from '@angular/common/http';
 
+import { LoginComponent } from './login/login.component'
+import { ReactiveFormsModule } from '@angular/forms';
+
 const routes:Routes = [
-  // {path: '' component : },
+  {path: '', component: LoginComponent },
   {path: 'staff', component: StaffListComponent},
   {path: 'admin', component: AdminComponent}
 ]
@@ -18,13 +22,14 @@ const routes:Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
-    StaffListComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(routes),
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],
