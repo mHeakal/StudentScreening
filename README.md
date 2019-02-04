@@ -1,2 +1,2 @@
 # StudentScreening
-MWA MUM final project
+MUM_MWA final project
