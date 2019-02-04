@@ -1,3 +1,39 @@
-<p>
-  staff-list works!
-</p>
+<!-- <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h1 class="h2">Dashboard</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button class="btn btn-sm btn-outline-secondary">Add Staff</button>
+      <!-- <button class="btn btn-sm btn-outline-secondary">Export</button> -->
+    </div>
+    <!-- <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <span data-feather="calendar"></span>
+              This week
+            </button> -->
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+
+        <th>Name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of staffList; let i : index">
+        <td>{{user.name}}</td>
+        <td>{{getStatusString(user.name)}}</td>
+        <td> <button  class="btn btn-sm btn-outline-secondary" (click)="changeStatusCall(user)">{{getStatusToggle(user.name)}}</button> </td>
+        
+      </tr>
+      
+
+    </tbody>
+  </table>
+</div>
+
+
+<!-- </main> -->
