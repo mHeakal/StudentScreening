@@ -1,0 +1,18 @@
+.left-menu {
+    background-color: bisque;
+    width: 30%;
+    height: 44%
+}
+
+.left-menu-buttons {
+    color: blueviolet;
+    font-size: 22px;
+    /* height: 20% */
+    
+}
+
+.list-data {
+    width: 60%;
+    height: 90%;
+    background-color: aquamarine
+}
