@@ -15,5 +15,14 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
   }
+  currentTab:0;
 
+  isActive(tabNumber) {
+    return this.currentTab == tabNumber;
+    
+  }
+
+  tabClicked(tabNumber){
+    this.currentTab = tabNumber;
+  }
 }
