@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
   tabNames= ["Staff", "Questions", "Answers"]
+  routes= ["staff", "questions", "answers"]
   // constructor(private tabNames) {
     // tabNames.push("Staff");
     // tabNames.push("Questions");
@@ -17,12 +19,24 @@ export class AdminComponent implements OnInit {
   }
   currentTab:0;
 
-  isActive(tabNumber) {
+  isActive(tabNumber) : boolean {
+    console.log(tabNumber);
     return this.currentTab == tabNumber;
     
   }
 
   tabClicked(tabNumber){
+    console.log(tabNumber);
     this.currentTab = tabNumber;
+  }
+
+  getClassName(tab: number) : String {
+    console.log(tab+'CALLLED');
+    return this.currentTab == tab ?'nav-link active':'nav-link';
+  }
+
+  getRouteName(tab : number){
+    console.log(tab+'getRouteName');
+    return this.routes[tab];
   }
 }
