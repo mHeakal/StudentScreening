@@ -15,6 +15,16 @@ router.post('/admin/addstaff', (req, res) => {
     console.log('admin route');
 });
 
+router.put('/admin/staff/change_status/:id', (req, res) => {
+    console.log('admin route change status '+req.params.id);
+
+    if(req.params.id) {
+        req.db.collection('staff').update({"id":id}, {$set: {'is_active': 'false'}})
+    } 
+
+});
+
+
 router.put('/admin/staff/:id', (req, res) => {
     console.log('admin route');
 });
@@ -50,7 +60,16 @@ router.put('/admin/snapshots/:studentid', (req, res) => {
 });
 
 router.get('/staff', (req, res) => {
-    console.log('list of students with status');
+    console.log('list of staff with status');
+
+    req.db.collection('staff').find().toArray(function(error, result){
+
+        if(error){
+            console.log(error);
+             return res.status(500).json(error);
+        }
+        return res.status(200).json(result);
+    });
 });
 
 router.put('/staff/invitation/:id', (req, res) => {

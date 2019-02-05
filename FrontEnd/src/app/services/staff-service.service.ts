@@ -8,14 +8,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class StaffServiceService {
-
+  private url = 'http://localhost:8000/api/login';
   private myHeader;// params;
   constructor(public http: HttpClient) { }
 
   getStaffList(pageNumber:number){
     this.myHeader =new Headers();
     this.myHeader.append('Content-Type', "application/json");
-    return this.http.get('https://randomuser.me/api/?results=10', {headers: this.myHeader});
+    return this.http.get(this.url+'api/staff', {headers: this.myHeader});
 
   }
 
@@ -24,7 +24,7 @@ export class StaffServiceService {
     this.myHeader.append('Content-Type', "application/json");
     // this.params = new HttpParams();
     // this.params.
-    return this.http.put('https://randomuser.me/api/?results=10', {headers: this.myHeader});
+    return this.http.put(this.url+'/admin/staff/change_status/:'+user.id, {headers: this.myHeader});
 
   }
 

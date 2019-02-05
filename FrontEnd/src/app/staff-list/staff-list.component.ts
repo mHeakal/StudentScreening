@@ -7,12 +7,15 @@ import { StaffServiceService } from '../services/staff-service.service';
   styleUrls: ['./staff-list.component.css']
 })
 export class StaffListComponent implements OnInit {
-  staffList : null;
+  staffList : [{}];
   constructor(private staffService : StaffServiceService) { 
+    
     this.serviceCallStaffList(1);
+    
   }
 
   ngOnInit() {
+    
   }
 
   serviceCallStaffList(pageNumber : number){
@@ -40,8 +43,13 @@ export class StaffListComponent implements OnInit {
         console.log(response);
         let resp = JSON.parse(JSON.stringify(response));
         // if(resp.status == 200) {}
+        let index = this.staffList.findIndex(x=>x['id']===user.id)
+
+        
+
         if(resp.results) {
-          this.staffList = resp.results;
+          // this.staffList = resp.results;
+          this.staffList[index] = resp.results;
         }
       },
       error => {

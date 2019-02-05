@@ -13,13 +13,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component'
 import { ReactiveFormsModule } from '@angular/forms';
 
-const routes:Routes = [
-  {path: '', component: LoginComponent },
+const routes: Routes = [
+  { path: '', component: LoginComponent },
   // {path: 'admin/staff', component: StaffListComponent},
-  {path: 'admin', component: AdminComponent,
-  children :[
-    { path:'staff', component: StaffListComponent }//, canActivate : [MyActivateGuard] }
-  ]}
+  {
+    path: 'admin', component: AdminComponent,
+    children: [
+      { path: 'staff', component: StaffListComponent }//, canActivate : [MyActivateGuard] }
+    ]
+  }
 ]
 
 @NgModule({
