@@ -15,14 +15,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 const routes:Routes = [
   {path: '', component: LoginComponent },
-  {path: 'staff', component: StaffListComponent},
-  {path: 'admin', component: AdminComponent}
+  // {path: 'admin/staff', component: StaffListComponent},
+  {path: 'admin', component: AdminComponent,
+  children :[
+    { path:'staff', component: StaffListComponent }//, canActivate : [MyActivateGuard] }
+  ]}
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    AdminComponent,
+    StaffListComponent
   ],
   imports: [
     BrowserModule,

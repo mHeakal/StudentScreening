@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validator, Validators, FormControl } from '@angular/forms';
 import { CheckUserService } from '../check-user.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -11,7 +13,8 @@ export class LoginComponent implements OnInit {
   myForm: FormGroup;
   private emailTimeout;
 
-  constructor(private formBuilder: FormBuilder, private chechUser: CheckUserService) {
+  constructor(private formBuilder: FormBuilder, private chechUser: CheckUserService, 
+        private router : Router) {
     this.myForm = formBuilder.group({
       'loginData': formBuilder.group({
         'email': ['', [
@@ -29,7 +32,9 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.chechUser.isUserExist({ email: this.myForm.get('loginData').get('email').value, password: this.myForm.get('loginData').get('password').value });
     // this.asyncEmailValidator.bind(this);
-    console.log('submitted')
+    console.log('submitted');
+    this.router.navigateByUrl('admin');
+    
   }
 
   // asyncEmailValidator(control: FormControl): Promise<any> | Observable<any> {
