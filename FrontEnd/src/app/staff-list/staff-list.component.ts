@@ -24,8 +24,8 @@ export class StaffListComponent implements OnInit {
         console.log(response);
         let resp = JSON.parse(JSON.stringify(response));
         // if(resp.status == 200) {}
-        if(resp.results) {
-          this.staffList = resp.results;
+        if(resp.data) {
+          this.staffList = resp.data;
         }
       },
       error => {
@@ -38,14 +38,13 @@ export class StaffListComponent implements OnInit {
   }
 
   changeStatusCall(user){
-    this.staffService.changeStatus(user).subscribe(
+    console.log('changeStatusCall method called '+user);
+    this.staffService.changeStatus(user, user.is_active==true?'false':'true').subscribe(
       response => {
         console.log(response);
         let resp = JSON.parse(JSON.stringify(response));
         // if(resp.status == 200) {}
         let index = this.staffList.findIndex(x=>x['id']===user.id)
-
-        
 
         if(resp.results) {
           // this.staffList = resp.results;
@@ -63,10 +62,10 @@ export class StaffListComponent implements OnInit {
 
 
   getStatusString(status):String{
-    return status === 1?"Deactive": "Active";
+    return status === false?"Deactive": "Active";
   }
 
   getStatusToggle(status):String{
-    return status === 1?"Activate": "Deactivate";
+    return status === false?"Activate": "Deactivate";
   }
 }
