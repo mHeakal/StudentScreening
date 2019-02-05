@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   myForm: FormGroup;
   private emailTimeout;
 
-  constructor(private formBuilder: FormBuilder, private chechUser: CheckUserService, 
-        private router : Router) {
+  constructor(private formBuilder: FormBuilder, private chechUser: CheckUserService,
+    private router: Router) {
     this.myForm = formBuilder.group({
       'loginData': formBuilder.group({
         'email': ['', [
@@ -30,11 +30,27 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.chechUser.isUserExist({ email: this.myForm.get('loginData').get('email').value, password: this.myForm.get('loginData').get('password').value });
-    // this.asyncEmailValidator.bind(this);
+    this.chechUser.isUserExist({
+      email: this.myForm.get('loginData').get('email').value,
+      password: this.myForm.get('loginData').get('password').value
+    })
+      .subscribe(
+        response => {
+          console.log(response);
+          let resp = JSON.parse(JSON.stringify(response));
+          if (resp.results == 'admin') {
+            this.router.navigateByUrl('admin');
+          }
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          console.log("Empty");
+        }
+      );
+    this.router.navigateByUrl('admin');//just for testing untill we connect successfully will be deleted after connecting
     console.log('submitted');
-    this.router.navigateByUrl('admin');
-    
   }
 
   // asyncEmailValidator(control: FormControl): Promise<any> | Observable<any> {
