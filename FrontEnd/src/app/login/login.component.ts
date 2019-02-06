@@ -38,9 +38,19 @@ export class LoginComponent implements OnInit {
         response => {
           console.log(response);
           let resp = JSON.parse(JSON.stringify(response));
-          if (resp.results == 'admin') {
+          // if (resp.results == 'admin') {
+          //   this.router.navigateByUrl('admin');
+          // }
+          console.log(""+(resp.success == true));
+          if(resp.success == true && resp.role.toLowerCase() == "admin" && resp.token){
+            localStorage.setItem('user',JSON.stringify(resp));
             this.router.navigateByUrl('admin');
+
+          }else if(resp.success == true && resp.role.toLowerCase() == "staff" && resp.token){
+            localStorage.setItem('user',JSON.stringify(resp));
+            this.router.navigateByUrl('staff');
           }
+
         },
         error => {
           console.log(error);
@@ -49,7 +59,7 @@ export class LoginComponent implements OnInit {
           console.log("Empty");
         }
       );
-    this.router.navigateByUrl('admin');//just for testing untill we connect successfully will be deleted after connecting
+    // this.router.navigateByUrl('admin');//just for testing untill we connect successfully will be deleted after connecting
     console.log('submitted');
   }
 

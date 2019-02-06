@@ -20,6 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UiSwitchModule } from 'ngx-toggle-switch';
 import { QuestionsComponent } from './questions/questions.component';
 import { QuestionService } from './services/question.service';
+import { ExamComponent } from './student/exam/exam.component';
+import { StartexamComponent } from './student/startexam/startexam.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -31,7 +33,15 @@ const routes: Routes = [
       { path: 'questions', component: QuestionsComponent}, //canActivate : [MyActivateGuard] }
       { path: 'staff/add-staff', component: AddStaffDialogComponent }//, canActivate : [MyActivateGuard] }
     ]
-  }
+  }, 
+  {
+    path:'exam/:token', component: ExamComponent
+    // ,
+    // children: [
+    //   { path: 'start', component: StartexamComponent}
+    // ]
+  },
+  { path: 'startExam/:token', component: StartexamComponent}
 ]
 
 @NgModule({
@@ -41,7 +51,8 @@ const routes: Routes = [
     AdminComponent,
     StaffListComponent,
     AddStaffDialogComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    ExamComponent,StartexamComponent
   ],
   imports: [
     BrowserModule,
