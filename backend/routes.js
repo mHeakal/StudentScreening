@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ObjectID = require('mongodb').ObjectID;
+var randStr = require('randomstring');
+
 //Define Routes:
 router.post('/', (req, res) => {
     //console.log('login route');
@@ -8,11 +10,30 @@ router.post('/', (req, res) => {
 });
 
 router.get('/admin', (req, res) => {
+    
     console.log('admin route');
 });
 
-router.post('/admin/addstaff', (req, res) => {
-    console.log('admin route');
+router.post('/admin/staff/add', (req, res) => {
+    console.log('add staff '+req.body);
+    console.log(req.body.name +" "+req.body['name']);
+    // res.json(req);
+     if(req.body.name && req.body.email) {
+
+        var passwordGenerated = randStr.generate(8);
+        console.log('password '+passwordGenerated);
+        req.db.collection("staff").insertOne({role:'staff', name: req.body.name, email:req.body.email, password: passwordGenerated}, (err, result)=> {
+            if(err){
+                console.log("staff added error "+ err);
+                res.status(500).json({success: false, message:"There is error occured during insertion"});
+                res.end();
+            } else {
+                console.log("staff added "+ result);
+                  res.status(200).json({success: true, message:"Staff added successfully"});
+                  res.end();
+            }
+        });
+    }
 });
 
 

@@ -28,5 +28,14 @@ export class StaffServiceService {
 
   }
 
+  addNewStaff(staff){
+    this.myHeader =new Headers();
+    this.myHeader.append('Content-Type', "application/json");
+    // this.params = new HttpParams();
+    // this.params.
+    console.log(staff);
+    return this.http.post(this.url+'admin/staff/add', staff, {headers: this.myHeader});
+  }
+
 
 }

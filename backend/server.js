@@ -15,6 +15,7 @@ let db;
 MongoClient.connect(process.env.DB_CONNECTION, (error,client) => {
     if(error) return console.log(error);
     db = client.db('StudentScreening');
+    db.collection('User').createIndex({ email: 1 }, { sparse: true, unique: true });
 })
 
 app.use(cors(corsOptions));

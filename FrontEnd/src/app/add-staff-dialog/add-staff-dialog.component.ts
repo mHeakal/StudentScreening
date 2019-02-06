@@ -9,6 +9,8 @@ import {
   FormBuilder,
   FormArray
 } from "@angular/forms";
+import { StaffServiceService } from '../services/staff-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-staff-dialog',
@@ -21,11 +23,11 @@ export class AddStaffDialogComponent implements OnInit {
 
   ngOnInit() {
   }
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private staffService: StaffServiceService, private router: Router) {
 
     this.staffForm = formBuilder.group({
-      'userdata' : formBuilder.group({
-        'name': ['', [Validators.required, this.nameValidator]],
+      'userData' : formBuilder.group({
+        'name': ['', [Validators.required]],//, this.nameValidator]],
         'email': ['', [
           Validators.required,
           Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
@@ -47,6 +49,27 @@ export class AddStaffDialogComponent implements OnInit {
     return null;
   }
 
+  onSubmit(){
+    console.log('submit called');
+   let data = {'email':this.staffForm.get('userData').get('email').value+'', 'name': this.staffForm.get('userData').get('name').value};
+    this.staffService.addNewStaff(data)
+    .subscribe(
+      response => {
+        console.log(response);
+        let resp = JSON.parse(JSON.stringify(response));
+        
+        if(resp.success == true) {
+          this.router.navigateByUrl('../staff');
 
+        }
+      },
+      (error) => {
+        console.log(error+'');
+      },
+      () => {
+        console.log("Empty");
+      }
+    )
+  }
 
 }
