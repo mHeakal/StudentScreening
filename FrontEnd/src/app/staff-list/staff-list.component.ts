@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { StaffServiceService } from '../services/staff-service.service';
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
 @Component({
   selector: 'app-staff-list',
   templateUrl: './staff-list.component.html',
   styleUrls: ['./staff-list.component.css']
 })
 export class StaffListComponent implements OnInit {
-  staffList : null;
+  addStaffRoute = 'add-staff'
+  staffList : [{}];
   constructor(private staffService : StaffServiceService) { 
+    
     this.serviceCallStaffList(1);
+    
   }
 
   ngOnInit() {
+    
   }
 
   serviceCallStaffList(pageNumber : number){
@@ -21,8 +26,8 @@ export class StaffListComponent implements OnInit {
         console.log(response);
         let resp = JSON.parse(JSON.stringify(response));
         // if(resp.status == 200) {}
-        if(resp.results) {
-          this.staffList = resp.results;
+        if(resp.data) {
+          this.staffList = resp.data;
         }
       },
       error => {
@@ -35,13 +40,17 @@ export class StaffListComponent implements OnInit {
   }
 
   changeStatusCall(user){
-    this.staffService.changeStatus(user).subscribe(
+    console.log('changeStatusCall method called '+user);
+    this.staffService.changeStatus(user, user.status=='active'?'Inactive':'active').subscribe(
       response => {
         console.log(response);
         let resp = JSON.parse(JSON.stringify(response));
         // if(resp.status == 200) {}
-        if(resp.results) {
-          this.staffList = resp.results;
+        let index = this.staffList.findIndex(x=>x['_id']===user._id)
+
+        if(resp.success == true) {
+          user.status = user.status=='active'?'Inactive':'active';
+          this.staffList[index]=  user;
         }
       },
       error => {
@@ -55,10 +64,18 @@ export class StaffListComponent implements OnInit {
 
 
   getStatusString(status):String{
-    return status === 1?"Deactive": "Active";
+    // return status === false?"Deactive": "Active";
+    return status;
   }
 
   getStatusToggle(status):String{
-    return status === 1?"Activate": "Deactivate";
+    return status === 'active'? "Deactivate":"Activate";
+  }
+
+  
+  addStaffClicked(){
+    
   }
 }
+
+

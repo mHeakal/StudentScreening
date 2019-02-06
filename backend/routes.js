@@ -15,7 +15,32 @@ router.post('/admin/addstaff', (req, res) => {
     console.log('admin route');
 });
 
+
+router.put('/admin/staff/change_status/:id/:isActive', (req, res) => {
+    console.log('admin route change status '+req.params.id+", "+req.params.isActive);
+
+    if(req.params.id) {
+        
+        req.db.collection('staff').updateOne({ _id: ObjectID(req.params.id), role:{ $ne:"admin"}},
+        // {'$set':{status :req.params.isActive}},
+        {$set: {status: req.params.isActive }},
+          (err, result) => {
+            console.log("staff update "+ result);
+             if(err){
+                res.status(500).json({success: false, message:"There is an error on updating."})
+             }else {
+                 res.status(200).json({success: true, message:"Update successfull"})
+            }
+            
+
+         });
+    } 
+
+});
+
+
 router.patch('/admin/staff/:id', (req, res) => {
+
     console.log('admin route');
 });
 
@@ -72,7 +97,19 @@ router.patch('/admin/snapshots/:studentid', (req, res) => {
 });
 
 router.get('/staff', (req, res) => {
-    console.log('list of students with status');
+    console.log('list of staff with status');
+
+    req.db.collection('staff').find({role: { $ne:"admin"}}).project({_id:1, name:1, status:1}).toArray(function(error, result){
+
+        if(error){
+            console.log(error);
+             return res.status(500).json(error);
+        }
+        else {
+            let data = {status: 'success', 'data': result};
+            return res.status(200).json(data);
+        } 
+    });
 });
 
 router.patch('/staff/invitation/:id', (req, res) => {
