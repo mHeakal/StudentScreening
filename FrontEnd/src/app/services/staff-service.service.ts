@@ -24,7 +24,7 @@ export class StaffServiceService {
     this.myHeader.append('Content-Type', "application/json");
     // this.params = new HttpParams();
     // this.params.
-    return this.http.put(this.url+'admin/staff/change_status/:'+user._id+'/:'+isActive, {headers: this.myHeader});
+    return this.http.put(this.url+'admin/staff/change_status/'+user._id+'/'+isActive, {headers: this.myHeader});
 
   }
 
