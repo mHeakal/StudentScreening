@@ -59,7 +59,7 @@ export class AddStaffDialogComponent implements OnInit {
         let resp = JSON.parse(JSON.stringify(response));
         
         if(resp.success == true) {
-          this.router.navigateByUrl('../staff');
+          // this.router.navigate('staff');
 
         }
       },

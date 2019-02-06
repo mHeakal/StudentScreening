@@ -28,6 +28,7 @@ const routes: Routes = [
     path: 'admin', component: AdminComponent,
     children: [
       { path: 'staff', component: StaffListComponent}, //canActivate : [MyActivateGuard] }
+      { path: 'questions', component: QuestionsComponent}, //canActivate : [MyActivateGuard] }
       { path: 'staff/add-staff', component: AddStaffDialogComponent }//, canActivate : [MyActivateGuard] }
     ]
   }
