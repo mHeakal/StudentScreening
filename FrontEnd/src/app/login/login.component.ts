@@ -43,8 +43,11 @@ export class LoginComponent implements OnInit {
           // }
           console.log(""+(resp.success == true));
           if(resp.success == true && resp.role.toLowerCase() == "admin" && resp.token){
+            localStorage.setItem('user',JSON.stringify(resp));
             this.router.navigateByUrl('admin');
+
           }else if(resp.success == true && resp.role.toLowerCase() == "staff" && resp.token){
+            localStorage.setItem('user',JSON.stringify(resp));
             this.router.navigateByUrl('staff');
           }
 
