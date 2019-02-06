@@ -2,11 +2,54 @@ const express = require('express');
 const router = express.Router();
 const ObjectID = require('mongodb').ObjectID;
 var randStr = require('randomstring');
+const jwt = require('jsonwebtoken')
 
 //Define Routes:
 router.post('/', (req, res) => {
     //console.log('login route');
     //reroute...
+});
+//Define Routes:
+router.post('/login', (req, res) => {
+    console.log('login route');
+    console.log('add staff ' + req.body);
+    console.log(req.body.email + " " + req.body['email']);
+
+    if (req.body.email && req.body.password) {
+
+        let email = req.body.email;
+        req.db.collection("staff").findOne({ email: req.body.email, password: req.body.password }, { name: 1, email: 1, role: 1 }
+            // );
+            , function (err, result) {
+                if (err) console.log('err ' + err);
+                console.log(result);
+
+                if (result.email) {
+                    const payload = { email, timestamp: new Date().getTime() }
+                    let jwtToken = jwt.sign(payload, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                        { expiresIn: '7d' });
+                    console.log('JWT Token ' + jwtToken);
+                    req.db.collection('staff').updateOne({ email: { $eq: email } },
+                        // {'$set':{status :req.params.isActive}},
+                        { $set: { token: jwtToken } },
+                        (err, updateResult) => {
+                            console.log("User update  " + updateResult);
+                            if (err) {
+                                res.status(500).json({ success: false, message: "There is an error on updating." })
+                            } else {
+                                res.status(200).json({ success: true, message: "Login successfull", token: jwtToken+'', name: result.name+'', email: result.email+'', role: result.role+'' })
+                            }
+                        });
+
+                }
+                else {
+                    res.status(401).json({ success: false, message: "Invalid username or password." })
+                }
+
+            }
+
+        );
+    }
 });
 
 router.get('/admin', (req, res) => {
