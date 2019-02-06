@@ -24,4 +24,6 @@ export class CheckUserService {
     console.log('is token expired '+this.jwtHelper.isTokenExpired(token));
     return !this.jwtHelper.isTokenExpired(token);
   }
+
+  
 }

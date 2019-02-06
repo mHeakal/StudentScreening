@@ -3,7 +3,7 @@ const router = express.Router();
 const ObjectID = require('mongodb').ObjectID;
 const jwt = require('jsonwebtoken');
 var randStr = require('randomstring');
-const jwt = require('jsonwebtoken')
+
 
 //Define Routes:
 router.post('/', (req, res) => {
@@ -23,7 +23,7 @@ router.post('/login', (req, res) => {
             // );
             , function (err, result) {
                 if (err) console.log('err ' + err);
-                console.log(result);
+                console.log("Result of findone"+result);
 
                 if (result.email) {
                     const payload = { email, timestamp: new Date().getTime() }

@@ -11,13 +11,17 @@ export class ExamComponent implements OnInit, OnDestroy {
 token="";
 isValid = false;
 subscription : Subscription ;
-  constructor(private router: ActivatedRoute, private routerToNavigate: Router) { 
+  constructor(private router: ActivatedRoute, private routerToNavigate: Router,  ) { 
     this.subscription = router.params.subscribe(params => {
       this.token = params['token'];
       
-      if(this.isValid)
+      if(!this.token)
       {
         this.routerToNavigate.navigateByUrl('startExam/'+this.token);
+      }
+      else {
+        
+        this.isValid =true;
       }      
     })
   }
@@ -29,7 +33,8 @@ subscription : Subscription ;
     this.subscription.unsubscribe();
   }
   onClickStart(){
-    this.routerToNavigate.navigateByUrl('startExam/'+this.token);
+    if(this.isValid)
+      this.routerToNavigate.navigateByUrl('startExam/'+this.token);
   }
 
 
