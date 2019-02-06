@@ -44,23 +44,24 @@ export class QuestionsComponent implements OnInit {
   }
 
   insertQuestion(question:Question){
-    console.log(question);
+    //console.log(question);
     this.questionService.insertQuestion(question).subscribe(result =>{
-      console.log("Add Question: " + JSON.stringify(result));
+      //console.log("Add Question: " + JSON.stringify(result));
+      this.questionForm.reset();
       this.getAllQuestions();
     });
   }
 
   deleteQuestion(q:Question){
     this.questionService.deleteQuestion(q).subscribe(result =>{
-      console.log("Deleted Question: " + JSON.stringify(result));
+      //console.log("Deleted Question: " + JSON.stringify(result));
       this.getAllQuestions();
     });
   }
 
   updateQuestionStatus(q:Question){
     this.questionService.updateQuestionStatus(q).subscribe(result =>{
-      console.log("Update Question status: " + JSON.stringify(result));
+      //console.log("Update Question status: " + JSON.stringify(result));
     });
   }
 }
