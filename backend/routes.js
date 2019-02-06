@@ -223,6 +223,17 @@ router.patch('/staff/invitation/:id', (req, res) => {
 
 router.get('/student/exam/:token', (req, res) => {
     console.log('start exam');
+    let exam = req.db.collection('exams').find({ token: req.params.token, status: 'sent' }).then(exam => {
+        return resp.status(200).json({
+            code: 1,
+            data: exam
+        });
+    }).catch(err => {
+        return resp.status(200).json({
+            code: 0,
+            data: null
+        });
+    });
 });
 
 router.post('/student/exam/snapshot/:token', (req, res) => {
