@@ -76,8 +76,19 @@ router.get('/admin/questions', (req, res) => {
 
 router.post('/admin/questions/:question', (req, res) => {
     //add question
+    //console.log("posting");
     req.db.collection('questions').insert(req.body,(error,result) =>{
         if(error) return res.status(500).json(error);
+        return res.status(200).json({success: true});
+    })
+});
+
+router.delete('/admin/questions/:id', (req, res) => {
+    // Delete question
+    req.db.collection('questions').deleteOne({_id:ObjectID(req.params.id)},
+        (error,result) =>{
+        if(error) return res.status(500).json(error);
+        // console.log("updated");
         return res.status(200).json({success: true});
     })
 });
@@ -85,10 +96,10 @@ router.post('/admin/questions/:question', (req, res) => {
 router.patch('/admin/questions/:id', (req, res) => {
     // update question status
     req.db.collection('questions').updateOne({_id:ObjectID(req.params.id)},
-        {'$set':{status:"Inactive"}},
+        {'$set':{status:req.body.status}},
         (error,result) =>{
         if(error) return res.status(500).json(error);
-        console.log("updated");
+        // console.log("updated");
         return res.status(200).json({success: true});
     })
 });

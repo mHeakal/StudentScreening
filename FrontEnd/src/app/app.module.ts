@@ -17,6 +17,9 @@ import { LoginComponent } from './login/login.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddStaffDialogComponent } from './add-staff-dialog/add-staff-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UiSwitchModule } from 'ngx-toggle-switch';
+import { QuestionsComponent } from './questions/questions.component';
+import { QuestionService } from './services/question.service';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -36,7 +39,8 @@ const routes: Routes = [
     LoginComponent,
     AdminComponent,
     StaffListComponent,
-    AddStaffDialogComponent
+    AddStaffDialogComponent,
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,10 +49,11 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    UiSwitchModule
 
     ],
-  providers: [],
+  providers: [QuestionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
