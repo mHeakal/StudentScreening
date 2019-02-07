@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { StaffService, Staff } from '../services/staff.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { CheckUserService } from '../check-user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-staff',
@@ -69,4 +73,23 @@ export class StaffComponent implements OnInit {
     });
   }
 
+}
+
+@Injectable()
+export class StaffGuard implements CanActivate {
+  path: ActivatedRouteSnapshot[];
+  route: ActivatedRouteSnapshot;
+  constructor(private r:Router, private dataservice: CheckUserService ){}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+ 
+    // let role = this.dataservice.isAuthenticatedForAdminRoute('admin');
+    if(this.dataservice.isAuthenticated('staff')) {
+     return true
+   }else{
+    this.r.navigate([''])
+   }
+
+   return false;
+
+  }
 }

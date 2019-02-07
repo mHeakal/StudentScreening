@@ -104,6 +104,34 @@ router.patch('/student/questions/submit-answer', (req, res) => {
 });
 // student route end
 
+router.post('/user-check', (req, res) => {
+    console.log('login route');
+    console.log('add staff ' + req.body);
+    console.log(req.body.email + " " + req.body['email']);
+
+    if (req.body.token) {
+
+        
+        req.db.collection("staff").findOne({ token: req.body.token}, { name: 1, email: 1, role: 1 }
+            // );
+            , function (err, result) {
+                if (err) console.log('err ' + err);
+                console.log("Result of findone" + result);
+                if (err) {
+                    res.status(401).json({ success: false, message: "Invalid username or password." })
+                } else if (result.email) {
+                          res.status(200).json({ success: true, message: "Valide token",  name: result.name + '', email: result.email + '', role: result.role + '' })
+                }
+                else {
+                    
+                }
+
+            }
+
+        );
+    }
+});
+
 router.post('/login', (req, res) => {
     console.log('login route');
     console.log('add staff ' + req.body);
