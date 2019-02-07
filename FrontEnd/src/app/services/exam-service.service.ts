@@ -11,14 +11,14 @@ private url = 'http://localhost:8000/api/';
   constructor(public http: HttpClient) { }
 
   studentAuthenticated(token: string): any {
-    return this.http.get(this.url+'/student/authenticated/'+token);
+    return this.http.get(this.url+'student/authenticated/'+token);
   }
 
   getQuestionForStudent(token: string): any {
-    return this.http.get(this.url+'/student/questions/'+token);
+    return this.http.get(this.url+'student/questions/'+token);
   }
 
   submitAnswers(data): any {
-    return this.http.patch(this.url+'/student/questions/submit-answer', data);
+    return this.http.patch(this.url+'student/questions/submit-answer', data);
   }
 }
