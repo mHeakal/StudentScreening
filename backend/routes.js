@@ -3,7 +3,6 @@ const router = express.Router();
 const ObjectID = require('mongodb').ObjectID;
 const jwt = require('jsonwebtoken');
 var randStr = require('randomstring');
-
 //Define Routes:
 router.post('/', (req, res) => {
     //console.log('login route');
@@ -22,7 +21,7 @@ router.post('/login', (req, res) => {
             // );
             , function (err, result) {
                 if (err) console.log('err ' + err);
-                console.log(result);
+                console.log("Result of findone"+result);
 
                 if (result.email) {
                     const payload = { email, timestamp: new Date().getTime() }
@@ -210,6 +209,17 @@ router.post('/staff/invitation/:student', async (req, res) => {
 
 router.get('/student/exam/:token', (req, res) => {
     console.log('start exam');
+    let exam = req.db.collection('exams').find({ token: req.params.token, status: 'sent' }).then(exam => {
+        return resp.status(200).json({
+            code: 1,
+            data: exam
+        });
+    }).catch(err => {
+        return resp.status(200).json({
+            code: 0,
+            data: null
+        });
+    });
 });
 
 router.post('/student/exam/snapshot/:token', (req, res) => {

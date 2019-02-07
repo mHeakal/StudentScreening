@@ -22,6 +22,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuestionService } from './services/question.service';
 import { ExamComponent } from './student/exam/exam.component';
 import { StartexamComponent } from './student/startexam/startexam.component';
+import { StaffComponent } from './staff/staff.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -29,7 +30,7 @@ const routes: Routes = [
   {
     path: 'admin', component: AdminComponent,
     children: [
-      { path: 'staff', component: StaffListComponent}, //canActivate : [MyActivateGuard] }
+      { path: 'staff', component: StaffComponent}, //canActivate : [MyActivateGuard] }
       { path: 'questions', component: QuestionsComponent}, //canActivate : [MyActivateGuard] }
       { path: 'staff/add-staff', component: AddStaffDialogComponent }//, canActivate : [MyActivateGuard] }
     ]
@@ -52,7 +53,8 @@ const routes: Routes = [
     StaffListComponent,
     AddStaffDialogComponent,
     QuestionsComponent,
-    ExamComponent,StartexamComponent
+    ExamComponent,StartexamComponent,
+    StaffComponent
   ],
   imports: [
     BrowserModule,
