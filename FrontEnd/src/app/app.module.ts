@@ -26,6 +26,7 @@ import { StartexamComponent } from './student/startexam/startexam.component';
 import { StaffComponent } from './staff/staff.component';
 import { ExamServiceService } from './services/exam-service.service';
 import { InvitationComponent } from './invitation/invitation.component';
+import { InvitationService } from './services/invitation.service';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -46,7 +47,8 @@ const routes: Routes = [
     // ]
   },
   { path: 'startExam/:token', component: StartexamComponent},
-  { path: 'staff', component: InvitationComponent}
+  { path: 'staff', component: InvitationComponent,
+}
 ]
 
 @NgModule({
@@ -74,7 +76,7 @@ const routes: Routes = [
     AceEditorModule
 
     ],
-  providers: [QuestionService, ExamServiceService],
+  providers: [QuestionService, ExamServiceService, InvitationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

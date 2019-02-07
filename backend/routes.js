@@ -84,7 +84,7 @@ router.patch('/student/questions/submit-answer', (req, res) => {
         // , {
         //     arrayFilters: [ { "p0":0  }, { "p1":1  }, { "p2":2  } ]
         //   }
-        { "$push": { 'exam.questions.0.answer': req.body.answer_0, 'exam.questions.1.answer': req.body.answer_1, 'exam.questions.2.answer': req.body.answer_2 } }
+        { $set: {status: "answered"}, "$push": { 'exam.questions.0.answer': req.body.answer_0, 'exam.questions.1.answer': req.body.answer_1, 'exam.questions.2.answer': req.body.answer_2 } }
         
         , function (err, result) {
 
