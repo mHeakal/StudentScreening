@@ -11,6 +11,7 @@ import {
   FormBuilder,
   FormArray
 } from "@angular/forms";
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-startexam',
@@ -21,7 +22,11 @@ export class StartexamComponent implements OnInit, OnDestroy {
   token="";
   isValid = false;
   questionsForm: FormGroup;
-data: {};
+  data: {};
+  questionObj0 : {}
+  questionObj1 : {}
+  questionObj2 : {}
+
 
   subscription : Subscription ;
 
@@ -38,8 +43,16 @@ data: {};
         this.service.getQuestionForStudent(this.token).subscribe(result => {
           if(result.success == true){
             this.isValid =true;
+            // result.forEach( function(el, index){
+            //   el['name_of_answer'] = 'answer_'+index;
+            //   this.data[index]= el;
+            // })
+            this.questionObj0 = result.exam.questions[0].question;
+            this.questionObj1= result.exam.questions[1].question;
+            this.questionObj2 =result.exam.questions[2].question;
+
             this.data = result;
-            this.createForm();
+            
           }
         }, 
         error => {
@@ -55,7 +68,7 @@ data: {};
     }
     
     ngOnInit() {
-  
+      this.createForm();
     }
     ngOnDestroy(){
       this.subscription.unsubscribe();

@@ -1,21 +1,37 @@
-<form [formGroup]="questionsForm" (ngSubmit)="onSubmit()">
-        
-    <div formGroupName= "questionsData">
-       <ul>
-      <li *ngFor="let questionObj of data.exam.questions; let i = index">
-        <div  class="form-group">
-          <label for="question_{{i}}"> {{questionObj['question']}}</label>
-          <textarea ace-editor rows="4" cols="50" class="form-control"   id="{{getAnswerControlName(i)}}" formControlName="{{getAnswerControlName(i)}}"
-            (keyup.enter) = "keyUpEvent($event)" ></textarea>
-        </div>
-        <!-- <input type="text" class="form-control" id="answer_1" formControlName="answer_1" /> -->
+<form [formGroup] = "questionsForm" (ngSubmit) = "onSubmit()">
 
-        
-      </li>
-    </ul>
-   
+
+  <div formGroupName="questionsData">
+    <!-- <ul> -->
+      <!-- <li *ngFor="let questionObj of data.exam.questions; let i = index"> -->
+        <!-- <div class="form-group">
+          <label for="question_{{i}}"> {{questionObj['question']}}</label>
+          <textarea ace-editor rows="4" cols="50" class="form-control"  id="answer_{{i}}"
+            formControlName="answer_{{i}}" (keyup.enter)="keyUpEvent($event)"></textarea>
+        </div> -->
+        <div class="form-group">
+            <label for="question_0"> {{questionObj0}}</label>
+            <textarea  rows="4" cols="50" class="form-control"  id="answer_0"
+              formControlName="answer_0" (keyup.enter)="keyUpEvent($event)"></textarea>
+          </div>
+          <div class="form-group">
+              <label for="question_1"> {{questionObj1}}</label>
+              <textarea  rows="4" cols="50" class="form-control"  id="answer_1"
+                formControlName="answer_1" (keyup.enter)="keyUpEvent($event)"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="question_2"> {{questionObj2}}</label>
+                <textarea  rows="4" cols="50" class="form-control"  id="answer_2"
+                  formControlName="answer_2" (keyup.enter)="keyUpEvent($event)"></textarea>
+              </div>
+
+      <!-- </li> -->
+    <!-- </ul> -->
+
   </div>
 
-  <input type="submit" class="btn btn-sm btn-outline-secondary" value="Submit Answers"/>
+  <input type="submit" class="btn btn-sm btn-outline-secondary" value="Submit Answers" />
   <!-- <button type="submit" class="btn btn-sm btn-outline-secondary" (click)="onSubmit()">Submit Answers</button> -->
 </form>
+
+        <!-- <input type="text" class="form-control" id="answer_1" formControlName="answer_1" /> -->
