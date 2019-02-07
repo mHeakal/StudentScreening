@@ -291,7 +291,7 @@ router.post('/staff/invitation/:student', async (req, res) => {
                 return res.status(200).json({ success: true });
             });
         //send email to with generated token
-        const body = `<a href='http://localhost4200/exam/${req.body.exam_token}'>Click to start Exam.</a>`
+        const body = `<a href='http://localhost:4200/exam/${req.body.exam_token}'>Click to start Exam.</a>`
         sendEmail(req.body.email,"Welcome Student!",body);
     }
     catch (error) {
