@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class CheckUserService {
+  
   jwtHelper: JwtHelperService;
   constructor(private http: HttpClient) { }
   isUserExist(body) {

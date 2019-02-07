@@ -29,7 +29,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of staffList; let i : index">
+      <tr *ngFor="let user of staffList; let i = index">
         <td>{{user.name}}</td>
         <td>{{getStatusString(user.status)}}</td>
         <td> <button  class="btn btn-sm btn-outline-secondary" (click)="changeStatusCall(user)">{{getStatusToggle(user.status  )}}</button> </td>

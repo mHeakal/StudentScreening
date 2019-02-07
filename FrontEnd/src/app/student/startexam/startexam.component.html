@@ -1,3 +1,21 @@
-<p>
-  startexam works!
-</p>
+<form [formGroup]="questionsForm" (ngSubmit)="onSubmit()">
+        
+    <div formGroupName= "questionsData">
+       <ul>
+      <li *ngFor="let questionObj of data.exam.questions; let i = index">
+        <div  class="form-group">
+          <label for="question_{{i}}"> {{questionObj['question']}}</label>
+          <textarea ace-editor rows="4" cols="50" class="form-control"   id="{{getAnswerControlName(i)}}" formControlName="{{getAnswerControlName(i)}}"
+            (keyup.enter) = "keyUpEvent($event)" ></textarea>
+        </div>
+        <!-- <input type="text" class="form-control" id="answer_1" formControlName="answer_1" /> -->
+
+        
+      </li>
+    </ul>
+   
+  </div>
+
+  <input type="submit" class="btn btn-sm btn-outline-secondary" value="Submit Answers"/>
+  <!-- <button type="submit" class="btn btn-sm btn-outline-secondary" (click)="onSubmit()">Submit Answers</button> -->
+</form>

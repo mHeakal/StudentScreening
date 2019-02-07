@@ -23,6 +23,7 @@ import { QuestionService } from './services/question.service';
 import { ExamComponent } from './student/exam/exam.component';
 import { StartexamComponent } from './student/startexam/startexam.component';
 import { StaffComponent } from './staff/staff.component';
+import { ExamServiceService } from './services/exam-service.service';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -53,7 +54,8 @@ const routes: Routes = [
     StaffListComponent,
     AddStaffDialogComponent,
     QuestionsComponent,
-    ExamComponent,StartexamComponent,
+    ExamComponent,
+    StartexamComponent,
     StaffComponent
   ],
   imports: [
@@ -67,7 +69,7 @@ const routes: Routes = [
     UiSwitchModule
 
     ],
-  providers: [QuestionService],
+  providers: [QuestionService, ExamServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

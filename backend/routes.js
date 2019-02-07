@@ -11,6 +11,100 @@ router.post('/', (req, res) => {
     //reroute...
 });
 //Define Routes:
+
+// Student exam routes
+
+router.get('/student/authenticated/:token', (req, res) => {
+    console.log('Student route' + req.params);
+    console.log(req.params['token'] + " ");
+    req.db.collection("students").findOne({ exam_token: req.params['token'], exam_token_status: true }, { name: 1 }
+
+        , function (err, result) {
+            if (err) {
+                console.log('err ' + err);
+                res.status(401).json({ success: false, message: "No exam found." })
+            }
+            console.log("Result of findone" + result);
+            if (result) {
+                if (result.name) {
+                    res.status(200).json({ success: true, message: "User is authenticated" })
+                }
+            }
+        });
+
+});
+
+router.get('/student/questions/:token', (req, res) => {
+    console.log('Student route' + req.params);
+    console.log(req.params['token'] + " ");
+    req.db.collection("students").findOne({ exam_token: req.params['token'], exam_token_status: true }, { name: 1, exam: 1 }
+        , function (err, result) {
+
+            console.log("Result of findone" + result);
+            if (err) {
+                console.log('err ' + err);
+                res.status(401).json({ success: false, message: "No exam found." })
+            }
+            else if (result) {
+                if (result.name) {
+                    req.db.collection('students').updateOne({ exam_token: { $eq: req.params['token'] } },
+                    { $set: { exam_token_status: false } });
+             
+                    res.status(200).json({ success: true, message: "User is authenticated", exam: { name: result.name, questions: result.exam.questions } })
+                }
+            }
+        });
+
+});
+
+router.patch('/student/questions/snapshot', (req, res) => {
+    console.log('Student route' + req.body.id);
+    console.log(req.params['token'] + " ");
+    req.db.collection("students").findOne({ exam_token: req.params['token'], exam_token_status: true }, { name: 1, exam: 1 }
+        , function (err, result) {
+
+            console.log("Result of findone" + result);
+            if (err) {
+                console.log('err ' + err);
+                res.status(401).json({ success: false, message: "No exam found." })
+            }
+            else if (result) {
+                if (result.name) {
+                     res.status(200).json({ success: true, message: "User is authenticated", exam: { name: result.name, questions: result.exam.questions } })
+                }
+            }
+        });
+
+});
+router.patch('/student/questions/submit-answer', (req, res) => {
+    console.log('Student route' + req.body.token);
+    console.log(req.body['token'] + " "+req.body.answer_0);
+
+    // need to implement the security for multiple answer submission
+    req.db.collection("students").updateOne({ exam_token: req.body.token, exam_token_status: false}, 
+        // { "$push": { 'exam.questions.$[p0].question.answer': req.body.answer_0, 'exam.questions.$[p1].question.answer': req.body.answer_1, 'exam.questions.$[p2].question.answer': req.body.answer_2 } }
+        // , {
+        //     arrayFilters: [ { "p0":0  }, { "p1":1  }, { "p2":2  } ]
+        //   }
+        { "$push": { 'exam.questions.0.answer': req.body.answer_0, 'exam.questions.1.answer': req.body.answer_1, 'exam.questions.2.answer': req.body.answer_2 } }
+        
+        , function (err, result) {
+
+            console.log("Result of update" + result);
+            if (err) {
+                console.log('err ' + err);
+                res.status(401).json({ success: false, message: "No exam found." })
+            }
+            else if (result) {
+                if (result.nModified == 1) {
+                    res.status(200).json({ success: true, message: "Answer has been submitted"})
+                }
+            }
+        });
+
+});
+// student route end
+
 router.post('/login', (req, res) => {
     console.log('login route');
     console.log('add staff ' + req.body);
@@ -23,7 +117,7 @@ router.post('/login', (req, res) => {
             // );
             , function (err, result) {
                 if (err) console.log('err ' + err);
-                console.log("Result of findone"+result);
+                console.log("Result of findone" + result);
 
                 if (result.email) {
                     const payload = { email, timestamp: new Date().getTime() }
@@ -38,7 +132,7 @@ router.post('/login', (req, res) => {
                             if (err) {
                                 res.status(500).json({ success: false, message: "There is an error on updating." })
                             } else {
-                                res.status(200).json({ success: true, message: "Login successfull", token: jwtToken+'', name: result.name+'', email: result.email+'', role: result.role+'' })
+                                res.status(200).json({ success: true, message: "Login successfull", token: jwtToken + '', name: result.name + '', email: result.email + '', role: result.role + '' })
                             }
                         });
 
@@ -54,7 +148,7 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/admin', (req, res) => {
-    
+
     console.log('admin route');
 });
 
@@ -85,7 +179,7 @@ router.get('/admin', (req, res) => {
 //     console.log('admin route change status '+req.params.id+", "+req.params.isActive);
 
 //     if(req.params.id) {
-        
+
 //         req.db.collection('staff').updateOne({ _id: ObjectID(req.params.id), role:{ $ne:"admin"}},
 //         // {'$set':{status :req.params.isActive}},
 //         {$set: {status: req.params.isActive }},
@@ -96,7 +190,7 @@ router.get('/admin', (req, res) => {
 //              }else {
 //                  res.status(200).json({success: true, message:"Update successfull"})
 //             }
-            
+
 
 //          });
 //     } 
@@ -111,81 +205,81 @@ router.get('/admin', (req, res) => {
 
 router.get('/admin/staff', (req, res) => {
     //get all Staff.
-    req.db.collection('staff').find({email:{$ne:'admin@admin.com'}}).toArray(function(error, result){
-        if(error) return res.status(500).json(error);
+    req.db.collection('staff').find({ email: { $ne: 'admin@admin.com' } }).toArray(function (error, result) {
+        if (error) return res.status(500).json(error);
         return res.status(200).json(result);
     });
-    
+
 });
 
 router.post('/admin/staff/:staff', (req, res) => {
     //add Staff
     var passwordGenerated = randStr.generate(8);
     req.body.password = passwordGenerated;
-    req.db.collection('staff').insertOne(req.body,(error,result) =>{
-        if(error) return res.status(500).json(error);
-        return res.status(200).json({success: true});
+    req.db.collection('staff').insertOne(req.body, (error, result) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json({ success: true });
     })
 });
 
 router.delete('/admin/staff/:id', (req, res) => {
     // Delete Staff
-    req.db.collection('staff').deleteOne({_id:ObjectID(req.params.id)},
-        (error,result) =>{
-        if(error) return res.status(500).json(error);
-        // console.log("updated");
-        return res.status(200).json({success: true});
-    })
+    req.db.collection('staff').deleteOne({ _id: ObjectID(req.params.id) },
+        (error, result) => {
+            if (error) return res.status(500).json(error);
+            // console.log("updated");
+            return res.status(200).json({ success: true });
+        })
 });
 
 router.patch('/admin/staff/:id', (req, res) => {
     // update staff status
-    req.db.collection('staff').updateOne({_id:ObjectID(req.params.id)},
-        {'$set':{status:req.body.status}},
-        (error,result) =>{
-        if(error) return res.status(500).json(error);
-        // console.log("updated");
-        return res.status(200).json({success: true});
-    })
+    req.db.collection('staff').updateOne({ _id: ObjectID(req.params.id) },
+        { '$set': { status: req.body.status } },
+        (error, result) => {
+            if (error) return res.status(500).json(error);
+            // console.log("updated");
+            return res.status(200).json({ success: true });
+        })
 });
- 
+
 router.get('/admin/questions', (req, res) => {
     //get all questions.
-    req.db.collection('questions').find().toArray(function(error, result){
-        if(error) return res.status(500).json(error);
+    req.db.collection('questions').find().toArray(function (error, result) {
+        if (error) return res.status(500).json(error);
         return res.status(200).json(result);
     });
-    
+
 });
 
 router.post('/admin/questions/:question', (req, res) => {
     //add question
     //console.log("posting");
-    req.db.collection('questions').insertOne(req.body,(error,result) =>{
-        if(error) return res.status(500).json(error);
-        return res.status(200).json({success: true});
+    req.db.collection('questions').insertOne(req.body, (error, result) => {
+        if (error) return res.status(500).json(error);
+        return res.status(200).json({ success: true });
     })
 });
 
 router.delete('/admin/questions/:id', (req, res) => {
     // Delete question
-    req.db.collection('questions').deleteOne({_id:ObjectID(req.params.id)},
-        (error,result) =>{
-        if(error) return res.status(500).json(error);
-        // console.log("updated");
-        return res.status(200).json({success: true});
-    })
+    req.db.collection('questions').deleteOne({ _id: ObjectID(req.params.id) },
+        (error, result) => {
+            if (error) return res.status(500).json(error);
+            // console.log("updated");
+            return res.status(200).json({ success: true });
+        })
 });
 
 router.patch('/admin/questions/:id', (req, res) => {
     // update question status
-    req.db.collection('questions').updateOne({_id:ObjectID(req.params.id)},
-        {'$set':{status:req.body.status}},
-        (error,result) =>{
-        if(error) return res.status(500).json(error);
-        // console.log("updated");
-        return res.status(200).json({success: true});
-    })
+    req.db.collection('questions').updateOne({ _id: ObjectID(req.params.id) },
+        { '$set': { status: req.body.status } },
+        (error, result) => {
+            if (error) return res.status(500).json(error);
+            // console.log("updated");
+            return res.status(200).json({ success: true });
+        })
 });
 
 router.get('/admin/results', (req, res) => {
@@ -258,49 +352,49 @@ async function sendEmail(email, message, messageHTML = '') {
 
 const { getStudentByEmails } = require('./services/student');
 
-    router.post('/staff/exam/sendinvitation',async (req, resp) => {
-        const student = req.body;
-        const questionCount = req.db.collection('questions').find({ status: true }).count().exec();   //inside question service we will create
-        //const randomQuestions = await getRandomQuestions(3, questionCount);
-        const students = await getStudentByEmails(data.emails);     //inside student service we will create
-        const random = Math.floor(Math.random() * questionCount);
-        randomQuestions = req.db.collection('questions').find({status:true},{_id:0,status:0}).skip(random).limit(3)
-        // const questions = [];
-        // randomQuestions.forEach(q => {
-        //     questions.push({
-        //         question: q.question,
-        //         answers: []
-        //     })
-        // });
-        data.emails.forEach(email => {
-            const payload = {
-                email,
-                timestamp: new Date().getTime()
-            }
-            
-            let exam = {
-                studentEmail: email,
-                randomQuestions,
-                token: jwt.sign(payload, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-                    { expiresIn: '7d' }),
-                status: 'sent',
-                duration: 0,
-                createdAt: new Date(),
-                updatedAt: new Date()
-            };
-            const student = students.find(s => s.email === email);
-            Exam.create(exam).then(result => {
-                const invitationLink = `<a href="${examUrl}?token=${exam.token}">link</a>`;
-                let emailMessage = emailMessage.replace('##STUDENT_NAME##', `${student.name}`).replace('##EXAM_LINK##', invitationLink);
-                sendEmail(email, 'you have 120 minute', emailMessage);
-            }).catch(error => console.log(error));
-        });
+router.post('/staff/exam/sendinvitation', async (req, resp) => {
+    const student = req.body;
+    const questionCount = req.db.collection('questions').find({ status: true }).count().exec();   //inside question service we will create
+    //const randomQuestions = await getRandomQuestions(3, questionCount);
+    const students = await getStudentByEmails(data.emails);     //inside student service we will create
+    const random = Math.floor(Math.random() * questionCount);
+    randomQuestions = req.db.collection('questions').find({ status: true }, { _id: 0, status: 0 }).skip(random).limit(3)
+    // const questions = [];
+    // randomQuestions.forEach(q => {
+    //     questions.push({
+    //         question: q.question,
+    //         answers: []
+    //     })
+    // });
+    data.emails.forEach(email => {
+        const payload = {
+            email,
+            timestamp: new Date().getTime()
+        }
 
-        resp.status(200).json({
-            code: 1,
-            data: `Good Luck`
-        });
+        let exam = {
+            studentEmail: email,
+            randomQuestions,
+            token: jwt.sign(payload, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                { expiresIn: '7d' }),
+            status: 'sent',
+            duration: 0,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        };
+        const student = students.find(s => s.email === email);
+        Exam.create(exam).then(result => {
+            const invitationLink = `<a href="${examUrl}?token=${exam.token}">link</a>`;
+            let emailMessage = emailMessage.replace('##STUDENT_NAME##', `${student.name}`).replace('##EXAM_LINK##', invitationLink);
+            sendEmail(email, 'you have 120 minute', emailMessage);
+        }).catch(error => console.log(error));
     });
+
+    resp.status(200).json({
+        code: 1,
+        data: `Good Luck`
+    });
+});
 
 
 module.exports = router;
