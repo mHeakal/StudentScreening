@@ -51,6 +51,9 @@ export class CheckUserService {
     this.jwtHelper = new JwtHelperService();
 
     const userDetails = JSON.parse(localStorage.getItem('user'));
+    if(!userDetails){
+      return false;
+    }
     const token = userDetails.token;
     if(token && userDetails.role.toLowerCase() == type)
     return true;

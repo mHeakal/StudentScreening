@@ -23,10 +23,12 @@ import { QuestionsComponent } from './questions/questions.component';
 import { QuestionService } from './services/question.service';
 import { ExamComponent } from './student/exam/exam.component';
 import { StartexamComponent } from './student/startexam/startexam.component';
-import { StaffComponent, StaffGuard } from './staff/staff.component';
+import { StaffComponent } from './staff/staff.component';
 import { ExamServiceService } from './services/exam-service.service';
-import { InvitationComponent } from './invitation/invitation.component';
+import { InvitationComponent, StaffGuard } from './invitation/invitation.component';
 import { InvitationService } from './services/invitation.service';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ThankyouComponent } from './student/thankyou/thankyou.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -48,7 +50,10 @@ const routes: Routes = [
   },
   { path: 'startExam/:token', component: StartexamComponent},
   { path: 'staff', component: InvitationComponent,canActivate : [StaffGuard]
-}
+},
+{ path: 'thankyou', component: ThankyouComponent},
+{ path: '404', component: NotFoundComponent },
+{ path: '**', redirectTo: '404' }
 ]
 
 @NgModule({
@@ -62,7 +67,9 @@ const routes: Routes = [
     ExamComponent,
     StartexamComponent,
     StaffComponent,
-    InvitationComponent
+    InvitationComponent,
+    NotFoundComponent,
+    ThankyouComponent
   ],
   imports: [
     BrowserModule,

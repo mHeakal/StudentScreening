@@ -1,6 +1,6 @@
 <div class="container-fluid">
 <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    <div class="h2 text-center">Invitations</div>
+    <div class="h2 text-center">Invitations  <button class="nav-link" (click)="signOut()">Sign out</button></div>
   </div>
   <div class="container">
   <ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>

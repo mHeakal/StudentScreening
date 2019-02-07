@@ -1,5 +1,5 @@
 import { Component, OnInit, Injectable } from '@angular/core';
-import { RouterModule, Routes, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { RouterModule, Routes, Router, ActivatedRouteSnapshot, RouterStateSnapshot, Route } from '@angular/router';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 import { CheckUserService } from '../check-user.service';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ export class AdminComponent implements OnInit {
     // tabNames.push("Questions");
     // tabNames.push("Answers");
   //  }
-
+  constructor(private routerToNavigate : Router){}
   ngOnInit() {
   }
   currentTab:0;
@@ -41,6 +41,14 @@ export class AdminComponent implements OnInit {
   getRouteName(tab : number){
     console.log(tab+'getRouteName');
     return this.routes[tab];
+  }
+
+  signOut() {
+
+    localStorage.removeItem('user');
+    localStorage.clear();
+    this.routerToNavigate.navigateByUrl('/');
+
   }
 }
 

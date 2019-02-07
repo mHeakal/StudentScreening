@@ -312,7 +312,8 @@ router.post('/staff/invitation/:student', async (req, res) => {
                     exam_token: req.body.exam_token,
                     exam_token_expiry: req.body.exam_token_expiry,
                     status: req.body.status,
-                    exam: req.body.exam
+                    exam: req.body.exam,
+                    exam_token_status: true
                 }
             },
             (error, result) => {

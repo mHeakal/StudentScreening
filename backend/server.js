@@ -22,7 +22,12 @@ app.use(cors(corsOptions));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}));
 
+
+
 app.use((req, res, next) => {
+    if(req.headers.authorization){
+        console.log('Header authorization '+ req.headers.authorization)
+    }
     req.db = db;
     //console.log(req);
     return next();

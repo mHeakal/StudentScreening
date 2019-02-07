@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { InvitationService, Student } from '../services/invitation.service';
-import {Subject} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { CheckUserService } from '../check-user.service';
 
 @Component({
   selector: 'app-invitation',
@@ -14,7 +17,7 @@ export class InvitationComponent implements OnInit {
 
   staticAlertClosed = false;
   successMessage: string;
-  constructor(private invitationService: InvitationService) { }
+  constructor(private invitationService: InvitationService,private routerToNavigate: Router){ }
 
   ngOnInit() {
     this.getAllStudents();
@@ -41,4 +44,35 @@ export class InvitationComponent implements OnInit {
     });
   }
 
+
+  signOut() {
+
+    localStorage.removeItem('user');
+    localStorage.clear();
+    this.routerToNavigate.navigateByUrl('/');
+
+  }
+
+}
+
+
+
+
+@Injectable()
+export class StaffGuard implements CanActivate {
+  path: ActivatedRouteSnapshot[];
+  route: ActivatedRouteSnapshot;
+  constructor(private r:Router, private dataservice: CheckUserService ){}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+ 
+    // let role = this.dataservice.isAuthenticatedForAdminRoute('admin');
+    if(this.dataservice.isAuthenticated('staff')) {
+     return true
+   }else{
+    this.r.navigate([''])
+   }
+
+   return false;
+
+  }
 }
