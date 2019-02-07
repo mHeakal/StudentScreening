@@ -19,6 +19,6 @@ private url = 'http://localhost:8000/api/';
   }
 
   submitAnswers(data): any {
-    return this.http.post(this.url+'/student/questions/submit-answer', data);
+    return this.http.patch(this.url+'/student/questions/submit-answer', data);
   }
 }

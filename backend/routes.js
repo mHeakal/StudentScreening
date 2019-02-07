@@ -79,7 +79,7 @@ router.patch('/student/questions/submit-answer', (req, res) => {
     console.log(req.body['token'] + " "+req.body.answer_0);
 
     // need to implement the security for multiple answer submission
-    req.db.collection("students").updateOne({ exam_token: req.body.token, exam_token_status: false}, 
+    req.db.collection("students").updateOne({ exam_token: req.body.token, exam_token_status: false, status: "sent"}, 
         // { "$push": { 'exam.questions.$[p0].question.answer': req.body.answer_0, 'exam.questions.$[p1].question.answer': req.body.answer_1, 'exam.questions.$[p2].question.answer': req.body.answer_2 } }
         // , {
         //     arrayFilters: [ { "p0":0  }, { "p1":1  }, { "p2":2  } ]
@@ -94,9 +94,10 @@ router.patch('/student/questions/submit-answer', (req, res) => {
                 res.status(401).json({ success: false, message: "No exam found." })
             }
             else if (result) {
-                if (result.nModified == 1) {
+                console.log(JSON.parse(result)['nModified']);
+                if (JSON.parse(result)['nModified'] == 1) {
                     res.status(200).json({ success: true, message: "Answer has been submitted"})
-                }
+                }else res.status(401).json({ success: false, message: "You have already finished this test!"})
             }
         });
 
