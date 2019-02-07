@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AceEditorModule } from 'ng2-ace-editor';
 
 // import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
@@ -24,6 +25,7 @@ import { ExamComponent } from './student/exam/exam.component';
 import { StartexamComponent } from './student/startexam/startexam.component';
 import { StaffComponent } from './staff/staff.component';
 import { ExamServiceService } from './services/exam-service.service';
+import { InvitationComponent } from './invitation/invitation.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -33,7 +35,7 @@ const routes: Routes = [
     children: [
       { path: 'staff', component: StaffComponent}, //canActivate : [MyActivateGuard] }
       { path: 'questions', component: QuestionsComponent}, //canActivate : [MyActivateGuard] }
-      { path: 'staff/add-staff', component: AddStaffDialogComponent }//, canActivate : [MyActivateGuard] }
+      // { path: 'staff/add-staff', component: AddStaffDialogComponent }//, canActivate : [MyActivateGuard] }
     ]
   }, 
   {
@@ -43,7 +45,8 @@ const routes: Routes = [
     //   { path: 'start', component: StartexamComponent}
     // ]
   },
-  { path: 'startExam/:token', component: StartexamComponent}
+  { path: 'startExam/:token', component: StartexamComponent},
+  { path: 'staff', component: InvitationComponent}
 ]
 
 @NgModule({
@@ -56,7 +59,8 @@ const routes: Routes = [
     QuestionsComponent,
     ExamComponent,
     StartexamComponent,
-    StaffComponent
+    StaffComponent,
+    InvitationComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +70,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    UiSwitchModule
+    UiSwitchModule,
+    AceEditorModule
 
     ],
   providers: [QuestionService, ExamServiceService],
