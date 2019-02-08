@@ -148,7 +148,16 @@ router.post('/login', (req, res) => {
 
 router.get('/admin', (req, res) => {
 
-    console.log('admin route');
+    //console.log('admin route');
+});
+
+router.get('/admin/students', (req, res) => {
+    //get all students.
+    req.db.collection('students').find({status:"answered"}).toArray(function (error, result) {
+        if (error) return res.status(500).json(error);
+        //console.log(result);
+        return res.status(200).json(result);
+    });
 });
 
 router.get('/admin/staff', (req, res) => {
@@ -253,6 +262,8 @@ router.get('/staff/students', (req, res) => {
     });
 });
 
+
+
 router.post('/staff/invitation/:student', async (req, res) => {
     //send Invitation
     //Generate exam token for student.
@@ -283,6 +294,7 @@ router.post('/staff/invitation/:student', async (req, res) => {
                 '$set': {
                     exam_token: req.body.exam_token,
                     exam_token_expiry: req.body.exam_token_expiry,
+                    exam_token_status: true,
                     status: req.body.status,
                     exam: req.body.exam
                 }
