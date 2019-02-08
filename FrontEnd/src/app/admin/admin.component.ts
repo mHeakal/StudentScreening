@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { RouterModule, Routes, Router, ActivatedRouteSnapshot, RouterStateSnapshot, Route } from '@angular/router';
+import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { CheckUserService } from '../check-user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -14,7 +17,7 @@ export class AdminComponent implements OnInit {
     // tabNames.push("Questions");
     // tabNames.push("Answers");
   //  }
-
+  constructor(private routerToNavigate : Router){}
   ngOnInit() {
   }
   currentTab:0;
@@ -38,5 +41,33 @@ export class AdminComponent implements OnInit {
   getRouteName(tab : number){
     console.log(tab+'getRouteName');
     return this.routes[tab];
+  }
+
+  signOut() {
+
+    localStorage.removeItem('user');
+    localStorage.clear();
+    this.routerToNavigate.navigateByUrl('/');
+
+  }
+}
+
+
+@Injectable()
+export class MyActivateGuard implements CanActivate {
+  path: ActivatedRouteSnapshot[];
+  route: ActivatedRouteSnapshot;
+  constructor(private r:Router, private dataservice: CheckUserService ){}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+ 
+    // let role = this.dataservice.isAuthenticatedForAdminRoute('admin');
+    if(this.dataservice.isAuthenticated('admin')) {
+     return true
+   }else{
+    this.r.navigate([''])
+   }
+
+   return false;
+
   }
 }
